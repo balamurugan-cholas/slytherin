@@ -1,9 +1,11 @@
 import { motion, useScroll } from "motion/react";
 import { useRef } from "react";
+import heroVideo from "/videos/hero-background.mp4"; 
 
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
+  const videoPath = "/slytherin/videos/hero-background.mp4";
 
   return (
     <div ref={containerRef} className="relative h-screen w-full overflow-hidden">
@@ -15,7 +17,7 @@ export function HeroSection() {
         playsInline 
         className="absolute inset-0 h-full w-full object-cover"
       >
-        <source src="/videos/hero-background.mp4" type="video/mp4" />
+        <source src={videoPath} type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
