@@ -1,5 +1,6 @@
 import { motion, useInView } from "motion/react";
 import { useRef, useState, useEffect } from "react";
+// @ts-ignore
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 const portfolioItems = [
@@ -60,7 +61,7 @@ export function BentoGrid() {
             viewport={{ once: true }}
             className="font-mono text-[10px] uppercase tracking-[0.4em] text-white/30"
           >
-            Selected Works
+            The Vault
           </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}

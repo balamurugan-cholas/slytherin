@@ -1,16 +1,11 @@
-import { motion, useInView } from "motion/react";
+import { motion, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { Instagram, Twitter, Video, Phone } from "lucide-react";
+import { Instagram, Twitter, Video, Phone, ArrowUpRight } from "lucide-react";
 
 export function FooterSection() {
   const [currentTime, setCurrentTime] = useState("");
-  const emailRef = useRef(null);
-  const isEmailInView = useInView(emailRef, { once: true });
-  const [isTypingDone, setIsTypingDone] = useState(false);
+  const containerRef = useRef(null);
   
-  const emailText = "HELLO@SLYTHERIN.COM";
-
-  // UPDATED: Function to get India Standard Time (IST)
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -20,119 +15,98 @@ export function FooterSection() {
         minute: "2-digit",
         hour12: false,
       };
-      const istTime = now.toLocaleTimeString("en-GB", options);
-      setCurrentTime(`${istTime} IST`);
+      setCurrentTime(`${now.toLocaleTimeString("en-GB", options)} IST`);
     };
-
     updateTime();
-    const interval = setInterval(updateTime, 1000); // Updated to 1s for precision
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const sentence = {
-    hidden: { opacity: 1 },
-    visible: { opacity: 1, transition: { delay: 0.5, staggerChildren: 0.05 } },
-  };
-
-  const letter = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  };
-
   const socialIcons = [
-    { icon: <Instagram size={18} />, href: "#", label: "Instagram" },
-    { icon: <Video size={18} />, href: "#", label: "Vimeo" },
-    { icon: <Twitter size={18} />, href: "#", label: "Twitter" },
-    { icon: <Phone size={18} />, href: "tel:+1234567890", label: "Call", color: "text-red-500" },
+    { icon: <Instagram size={20} />, href: "#", label: "Instagram" },
+    { icon: <Video size={20} />, href: "#", label: "Vimeo" },
+    { icon: <Twitter size={20} />, href: "#", label: "Twitter" },
+    { icon: <Phone size={20} />, href: "tel:+1234567890", label: "Call" },
   ];
 
   return (
-    <section id="contact" className="relative h-screen w-full bg-[#0A0A0A] flex flex-col items-center justify-center overflow-hidden px-4 md:px-16">
+    <section className="relative h-screen w-full bg-[#0A0A0A] text-white flex flex-col items-center justify-center overflow-hidden">
       
-      {/* 1. THE BIG GHOST TEXT */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <h2 className="font-black uppercase tracking-tighter leading-none opacity-10"
-          style={{
-            fontSize: "clamp(5rem, 22vw, 25rem)", 
-            WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.2)",
-            color: "transparent", 
-          }}
-        >START</h2>
+      {/* 1. BACKGROUND GRID & GLOW */}
+      <div className="absolute inset-0 opacity-20" 
+        style={{ backgroundImage: `radial-gradient(#ffffff10 1px, transparent 1px)`, backgroundSize: '40px 40px' }} 
+      />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#FFD60A]/10 blur-[120px] rounded-full pointer-events-none" />
+
+      {/* 2. CORNER HUD ELEMENTS */}
+      <div className="absolute top-12 left-8 md:left-16 flex flex-col gap-2">
+        <p className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase leading-none">Local Time</p>
+        <p className="font-mono text-xl font-light">{currentTime}</p>
       </div>
 
-      {/* 2. THE TOP STATUS */}
-      <div className="absolute top-10 left-6 md:left-12 space-y-2">
-        <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white">
-          <div className="relative flex h-2 w-2 items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-green-500/40 blur-[4px]" />
-            <motion.div className="relative h-full w-full rounded-full bg-green-500" animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-          </div>
-          <span className="hidden xs:inline text-white/90 font-bold">STATUS: AVAILABLE FOR PROJECTS</span>
-          <span className="xs:hidden text-green-500">AVAILABLE</span>
-        </div>
-        <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/30">
-          LOCAL TIME: {currentTime}
+      <div className="absolute top-12 right-8 md:right-16 text-right flex flex-col gap-2">
+        <p className="font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase leading-none">Studio Status</p>
+        <div className="flex items-center gap-2 justify-end">
+          <motion.div 
+            animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }} 
+            transition={{ duration: 2, repeat: Infinity }}
+            className="h-1.5 w-1.5 rounded-full bg-[#FFD60A]" 
+          />
+          <p className="font-mono text-xs uppercase tracking-widest text-[#FFD60A]">Accepting Briefs</p>
         </div>
       </div>
 
-      {/* 3. CENTERED CONTACT */}
-      <div className="relative z-10 w-full flex flex-col items-center overflow-visible">
-        <p className="font-mono text-[10px] md:text-xs text-white/40 uppercase tracking-[0.4em] mb-6">Ready to collaborate?</p>
-        
-        <motion.a
-          ref={emailRef}
-          href={`mailto:${emailText.toLowerCase()}`}
-          variants={sentence}
-          initial="hidden"
-          animate={isEmailInView ? "visible" : "hidden"}
-          onAnimationComplete={() => setIsTypingDone(true)}
-          className={`block font-black uppercase tracking-tighter transition-all duration-500 whitespace-nowrap leading-none ${isTypingDone ? 'shimmer-text' : 'text-white'}`}
-          style={{
-            fontSize: "clamp(1.5rem, 7.2vw, 10rem)",
-          }}
+      {/* 3. MAIN CONTACT AREA */}
+      <div className="relative z-10 flex flex-col items-center px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="mb-12 overflow-hidden"
         >
-          {emailText.split("").map((char, index) => (
-            <motion.span key={index} variants={letter} className="inline-block">
-              {char}
-            </motion.span>
-          ))}
+          <h2 className="text-center font-black text-6xl md:text-9xl uppercase tracking-tighter leading-[0.8] mb-4">
+            LET'S <span className="text-transparent" style={{ WebkitTextStroke: "1px white" }}>BUILD</span> <br /> 
+            SOMETHING <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-[#FFD60A] px-4 lowercase tracking-normal">
+            ICNOIC
+          </span>
+          </h2>
+        </motion.div>
+
+        <motion.a
+          href="mailto:hello@slytherin.com"
+          whileHover={{ scale: 1.05 }}
+          className="group relative flex items-center gap-4 bg-white text-black px-8 py-5 md:px-12 md:py-8 rounded-full overflow-hidden transition-all duration-500"
+        >
+          <span className="relative z-10 font-bold md:text-2xl uppercase tracking-tighter">hello@slytherin.com</span>
+          <ArrowUpRight className="relative z-10 transition-transform duration-500 group-hover:rotate-45" size={28} />
+          <div className="absolute inset-0 bg-[#FFD60A] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
         </motion.a>
+      </div>
 
-        {/* MOBILE ICONS */}
-        <div className="flex md:hidden gap-8 mt-12 text-white/40">
-            {socialIcons.map((s, i) => (
-              <a key={i} href={s.href} className={`hover:text-white transition-colors ${s.color || ''}`}>{s.icon}</a>
-            ))}
+      {/* 4. FLOATING SOCIAL DOCK */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
+        <div className="flex items-center gap-2 p-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-6 py-3">
+          {socialIcons.map((s, i) => (
+            <motion.a
+              key={i}
+              href={s.href}
+              whileHover={{ y: -5, color: "#FFD60A" }}
+              className="p-3 text-white/40 transition-colors"
+              title={s.label}
+            >
+              {s.icon}
+            </motion.a>
+          ))}
+          <div className="h-6 w-[1px] bg-white/10 mx-2" />
+          <p className="font-mono text-[10px] tracking-widest text-white/30 hidden md:block">CONNECT WITH US</p>
         </div>
       </div>
 
-      {/* 4. FOOTER BOTTOM */}
-      <div className="absolute bottom-10 w-full px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6 text-white/40">
-        <div className="hidden md:flex gap-8">
-            {socialIcons.map((s, i) => (
-              <a key={i} href={s.href} className={`hover:text-white transition-colors ${s.color || ''}`} title={s.label}>{s.icon}</a>
-            ))}
-        </div>
-        
-        <div className="font-mono text-[10px] uppercase tracking-[0.2em] opacity-50">
-          © 2026 SLYTHERIN — ALL RIGHTS RESERVED
-        </div>
+      {/* 5. COPYRIGHT FOOTNOTE */}
+      <div className="absolute bottom-6 w-full text-center px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p className="font-mono text-[9px] text-white/20 tracking-[0.4em] uppercase">Slytherin Agency © 2026</p>
+        <div className="h-px flex-1 bg-white/5 mx-8 hidden md:block" />
+        <p className="font-mono text-[9px] text-white/20 tracking-[0.4em] uppercase">Built for the bold</p>
       </div>
-
-      <style>{`
-        .shimmer-text {
-          background: linear-gradient(to right, #ffffff 20%, #ef4444 40%, #ef4444 60%, #ffffff 80%);
-          background-size: 400% auto;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: sweep 12s linear infinite; 
-        }
-        @keyframes sweep {
-          0% { background-position: 100% center; }
-          100% { background-position: -100% center; }
-        }
-      `}</style>
     </section>
   );
 }
