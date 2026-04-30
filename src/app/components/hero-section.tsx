@@ -1,14 +1,22 @@
 import { motion, useScroll } from "motion/react";
-import { useRef } from "react";
-import heroVideo from "/videos/hero-background.mp4"; 
+import { RefObject } from "react"; // 1. Import RefObject
 
-export function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll();
+// 2. Accept progressTarget as a prop
+// Change this line:
+export function HeroSection({ progressTarget }: { progressTarget: RefObject<HTMLDivElement | null> }) {
+
+  
+  // 3. Connect useScroll to the target ref
+  const { scrollYProgress } = useScroll({
+    target: progressTarget,
+    offset: ["start start", "end end"] // 0% at start of Hero, 100% at end of Bento
+  });
+
   const videoPath = "/slytherin/videos/hero-background.mp4";
 
   return (
-    <div ref={containerRef} className="relative h-screen w-full overflow-hidden">
+    // Note: containerRef removed from here as we use progressTarget from props
+    <div className="relative h-screen w-full overflow-hidden">
       {/* 1. BACKGROUND VIDEO & OVERLAYS */}
       <video 
         autoPlay 
@@ -81,7 +89,7 @@ function ScrollProgressBar({ scrollYProgress }: { scrollYProgress: any }) {
     <div 
       className="absolute bottom-0 left-0 right-0 h-5 z-50 overflow-hidden" 
       style={{
-        background: "transparent", // Changed from #000000 to transparent
+        background: "transparent",
       }}
     >
       <motion.div
@@ -91,21 +99,15 @@ function ScrollProgressBar({ scrollYProgress }: { scrollYProgress: any }) {
           transformOrigin: "left", 
         }}
       >
-        {/* The Yellow Bar with the trailing Gradient */}
         <div 
           className="h-full w-full"
           style={{
-            // Updated gradient to fade into transparency instead of solid black
             background: "linear-gradient(to right, #FFD60A 70%, rgba(255, 214, 10, 0) 100%)",
             boxShadow: "0px 0px 25px rgba(255, 214, 10, 0.4)" 
           }}
         />
-        
-        {/* Playhead Detail */}
         <div className="absolute right-0 top-0 h-full w-[1px] bg-white/40" />
       </motion.div>
     </div>
   );
 }
-
-

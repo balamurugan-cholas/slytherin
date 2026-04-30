@@ -64,9 +64,18 @@ export function FooterSection() {
           className="mb-12 overflow-hidden"
         >
           <h2 className="text-center font-black text-6xl md:text-9xl uppercase tracking-tighter leading-[0.8] mb-4">
-            LET'S <span className="text-transparent" style={{ WebkitTextStroke: "1px white" }}>BUILD</span> <br /> 
+            LET'S <span
+              className="text-transparent"
+              style={{
+                WebkitTextStroke: "1px white",
+                fontFamily: "'Montserrat', sans-serif",
+                fontWeight: 800
+              }}
+            >
+              BUILD
+            </span> <br /> 
             SOMETHING <span style={{ fontFamily: "'Dancing Script', cursive" }} className="text-[#FFD60A] px-4 lowercase tracking-normal">
-            ICNOIC
+            ICONIC
           </span>
           </h2>
         </motion.div>
@@ -83,7 +92,7 @@ export function FooterSection() {
       </div>
 
       {/* 4. FLOATING SOCIAL DOCK */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2">
         <div className="flex items-center gap-2 p-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-6 py-3">
           {socialIcons.map((s, i) => (
             <motion.a

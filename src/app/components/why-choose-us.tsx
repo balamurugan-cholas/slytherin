@@ -138,7 +138,7 @@ export function WhyChooseUs() {
                   transition={{ duration: 0.6 }}
                   className="bg-[#0A0A0A]/80 backdrop-blur-sm p-8 md:p-12 border border-white/5 relative z-20 max-w-xl w-full text-center shadow-2xl"
                 >
-                  <span className="text-[#FFD60A] font-mono text-xs mb-4 block tracking-[0.3em]">// SECTION_{item.id}</span>
+                  <span className="text-[#FFD60A] font-mono text-xs mb-4 block tracking-[0.3em]">// PHASE_{item.id}</span>
                   <h3 className="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-tight">{item.title}</h3>
                   <p className="text-white/40 text-base md:text-lg font-light leading-relaxed">{item.description}</p>
                   <div className="mt-8 flex justify-center">
